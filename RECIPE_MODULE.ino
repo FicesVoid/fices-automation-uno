@@ -54,7 +54,6 @@ void cancelMixingRecipe() {
   BM_VALVE_B = 0;
   BM_VALVE_C = 0;
   BM_MIX_VALVE = 0;
-  BM_SOL_PUMP = 0;
   BM_MIX_PUMP = 0;
   
   MM_T1_IN = 0;

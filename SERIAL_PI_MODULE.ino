@@ -27,7 +27,6 @@ void moduleSerialPI() {
       case 0x06: BM_VALVE_B = val; break;
       case 0x07: BM_VALVE_C = val; break;
       case 0x08: BM_MIX_VALVE = val; break;
-      case 0x09: BM_SOL_PUMP = val; break;
       case 0x0A: BM_MIX_PUMP = val; break;
       
       // ===== MIXER MODULE =====
