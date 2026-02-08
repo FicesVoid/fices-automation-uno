@@ -14,11 +14,13 @@ void moduleManual() {
   digitalWrite(PIN_BM_VALVE_A,   BM_VALVE_A   ? LOW : HIGH);
   digitalWrite(PIN_BM_VALVE_B,   BM_VALVE_B   ? LOW : HIGH);
   digitalWrite(PIN_BM_VALVE_C,   BM_VALVE_C   ? LOW : HIGH);
-  /* ===== BM SOLENOID PUMP (Pin 24) ===== */
-  digitalWrite(PIN_BM_SOL_PUMP, BM_SOL_PUMP ? LOW : HIGH);
+  digitalWrite(PIN_BM_MIX_VALVE, BM_MIX_VALVE ? LOW : HIGH);
+  
+  /* ===== BM MIX PUMP (Pin 42) ===== */
+  digitalWrite(42, BM_MIX_PUMP ? LOW : HIGH);
 
-  /* ===== SHARED MIXER SOL/PUMP (Pin 42) ===== */
-  digitalWrite(PIN_MM_SOL_PUMP, (MM_SOL_PUMP || BM_MIX_PUMP) ? LOW : HIGH);
+  /* ===== MM SOL PUMP (Pin 43) ===== */
+  digitalWrite(PIN_MM_SOL_PUMP, MM_SOL_PUMP ? LOW : HIGH);
 
   
   digitalWrite(PIN_MM_T1_IN,    MM_T1_IN    ? LOW : HIGH);

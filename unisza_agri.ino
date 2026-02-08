@@ -25,10 +25,9 @@
 #define PIN_BM_VALVE_B     47
 #define PIN_BM_VALVE_C     48
 #define PIN_BM_MIX_VALVE   49
-#define PIN_BM_SOL_PUMP    24
 
 /* ===== MIXER MODULE PINS ===== */
-#define PIN_MM_SOL_PUMP    42   // LOCK alias
+#define PIN_MM_SOL_PUMP    43
 #define PIN_MM_T1_IN       7
 #define PIN_MM_T1_OUT      10
 #define PIN_MM_T2_IN       8
@@ -102,11 +101,10 @@ bool BM_VALVE_A = 0;
 bool BM_VALVE_B = 0;
 bool BM_VALVE_C = 0;
 bool BM_MIX_VALVE = 0;
-bool BM_SOL_PUMP = 0;
-bool BM_MIX_PUMP = 0; // Shared Pin 42 with MM_SOL_PUMP
+bool BM_MIX_PUMP = 0;
 
 // Mixer Module
-bool MM_SOL_PUMP = 0; // Shared Pin 42 with BM_MIX_PUMP
+bool MM_SOL_PUMP = 0;
 bool MM_T1_IN = 0;
 bool MM_T1_OUT = 0;
 bool MM_T2_IN = 0;
@@ -144,7 +142,6 @@ bool last_BM_VALVE_A = 0;
 bool last_BM_VALVE_B = 0;
 bool last_BM_VALVE_C = 0;
 bool last_BM_MIX_VALVE = 0;
-bool last_BM_SOL_PUMP = 0;
 bool last_BM_MIX_PUMP = 0;
 
 // Mixer Module
@@ -172,7 +169,6 @@ int state_BM_VALVE_A = 0;
 int state_BM_VALVE_B = 0;
 int state_BM_VALVE_C = 0;
 int state_BM_MIX_VALVE = 0;
-int state_BM_SOL_PUMP = 0;
 int state_BM_MIX_PUMP = 0;
 
 // Mixer Module
@@ -223,7 +219,6 @@ void setup() {
   pinMode(PIN_BM_VALVE_B, OUTPUT);
   pinMode(PIN_BM_VALVE_C, OUTPUT);
   pinMode(PIN_BM_MIX_VALVE, OUTPUT);
-  pinMode(PIN_BM_SOL_PUMP, OUTPUT);
 
   /* ===== MIXER MODULE ===== */
   pinMode(PIN_MM_SOL_PUMP, OUTPUT);
@@ -308,7 +303,6 @@ void initEventState()
   last_BM_VALVE_B   = state_BM_VALVE_B;
   last_BM_VALVE_C   = state_BM_VALVE_C;
   last_BM_MIX_VALVE = state_BM_MIX_VALVE;
-  last_BM_SOL_PUMP  = state_BM_SOL_PUMP;
   last_BM_MIX_PUMP  = state_BM_MIX_PUMP;
 
   last_MM_SOL_PUMP = state_MM_SOL_PUMP;
