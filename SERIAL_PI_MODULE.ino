@@ -56,6 +56,11 @@ void moduleSerialPI() {
       case 0x27:
         if (val == 1) cancelMixingRecipe(); // RECIPE_CANCEL
         break;
+        
+      // ===== POLLING COMMAND =====
+      case 0xAA:
+        moduleSendBytePI(true); // Force send all sensors
+        break;
       
       default:
         // Unknown ID, ignore

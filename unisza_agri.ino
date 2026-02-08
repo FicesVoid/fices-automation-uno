@@ -285,7 +285,7 @@ void loop() {
 
   moduleStatusCheck(); // Moved here to read ACTUAL pin state AFTER writing
   
-  moduleSendBytePI();     // ✅ BYTE PROTOCOL - send sensor data
+  // moduleSendBytePI();     // DISABLED: Now using polling via moduleSerialPI (command 0xAA)
   sendEventStatusPI();
   initEventState();
 }

@@ -6,6 +6,9 @@
 unsigned long lastSensorSend = 0;
 const unsigned long SENSOR_INTERVAL = 2000; // 2 seconds
 
+// Overload for backward compatibility (defaults to not forced)
+void moduleSendBytePI(bool force = false);
+
 // ==================================================
 // SEND SINGLE SENSOR AS BYTE PACKET
 // ==================================================
@@ -36,9 +39,9 @@ void sendSensorByte(byte sensorID, float value, int scale) {
 // SEND ALL SENSORS
 // ==================================================
 
-void moduleSendBytePI() {
+void moduleSendBytePI(bool force) {
   
-  if (millis() - lastSensorSend < SENSOR_INTERVAL) return;
+  if (!force && millis() - lastSensorSend < SENSOR_INTERVAL) return;
   lastSensorSend = millis();
   
   // ===== CONTROL ROOM STATION (0x10-0x1F) =====
