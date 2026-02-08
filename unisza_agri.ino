@@ -285,7 +285,7 @@ void loop() {
 
   moduleStatusCheck(); // Moved here to read ACTUAL pin state AFTER writing
   
-  moduleSendJsonPI();     // sentiasa hantar
+  moduleSendBytePI();     // ✅ BYTE PROTOCOL - send sensor data
   sendEventStatusPI();
   initEventState();
 }
