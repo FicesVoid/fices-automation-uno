@@ -49,33 +49,31 @@ void moduleSendBytePI(bool force) {
   sendSensorByte(0x11, btl, 100);   // Buffer tank level
   
   // ===== BUFFER MIXER STATION (0x20-0x2F) =====
-  sendSensorByte(0x20, btl, 100);   // Buffer water level (same sensor as CR)
-  sendSensorByte(0x21, temp, 100);  // Temperature
-  sendSensorByte(0x22, ph, 100);    // pH
-  sendSensorByte(0x23, ec, 100);    // EC
-  sendSensorByte(0x24, tds, 1);     // TDS (no scaling, already in ppm)
-  sendSensorByte(0x25, va, 100);    // Fertilizer Tank A
-  sendSensorByte(0x26, vb, 100);    // Fertilizer Tank B
-  sendSensorByte(0x27, vc, 100);    // Fertilizer Tank C
+  sendSensorByte(0x20, temp, 100);  // Temperature
+  sendSensorByte(0x21, ph, 100);    // pH
+  sendSensorByte(0x22, ec, 100);    // EC
+  sendSensorByte(0x23, tds, 1);     // TDS
+  sendSensorByte(0x24, va, 100);    // Fertilizer Tank A
+  sendSensorByte(0x25, vb, 100);    // Fertilizer Tank B
+  sendSensorByte(0x26, vc, 100);    // Fertilizer Tank C
   
-  // ===== MIXER MODULE STATION (0x30-0x4F) =====
-  // Tank 1
+  // ===== MIXER MODULE - TANK 1 (0x30-0x3F) =====
   sendSensorByte(0x30, t1l, 100);   // Tank 1 level
   sendSensorByte(0x31, t1t, 100);   // Tank 1 temperature
   sendSensorByte(0x32, t1p, 100);   // Tank 1 pH
   sendSensorByte(0x33, t1tds, 1);   // Tank 1 TDS
   
-  // Tank 2
-  sendSensorByte(0x34, t2l, 100);   // Tank 2 level
-  sendSensorByte(0x35, t2t, 100);   // Tank 2 temperature
-  sendSensorByte(0x36, t2p, 100);   // Tank 2 pH
-  sendSensorByte(0x37, t2tds, 1);   // Tank 2 TDS
+  // ===== MIXER MODULE - TANK 2 (0x40-0x4F) =====
+  sendSensorByte(0x40, t2l, 100);   // Tank 2 level
+  sendSensorByte(0x41, t2t, 100);   // Tank 2 temperature
+  sendSensorByte(0x42, t2p, 100);   // Tank 2 pH
+  sendSensorByte(0x43, t2tds, 1);   // Tank 2 TDS
   
-  // Tank 3
-  sendSensorByte(0x38, t3l, 100);   // Tank 3 level
-  sendSensorByte(0x39, t3t, 100);   // Tank 3 temperature
-  sendSensorByte(0x3A, t3p, 100);   // Tank 3 pH
-  sendSensorByte(0x3B, t3tds, 1);   // Tank 3 TDS
+  // ===== MIXER MODULE - TANK 3 (0x50-0x5F) =====
+  sendSensorByte(0x50, t3l, 100);   // Tank 3 level
+  sendSensorByte(0x51, t3t, 100);   // Tank 3 temperature
+  sendSensorByte(0x52, t3p, 100);   // Tank 3 pH
+  sendSensorByte(0x53, t3tds, 1);   // Tank 3 TDS
 }
 
 // ==================================================
@@ -99,6 +97,7 @@ void sendEventStatusPI() {
   sendByteEvent(0x06, state_BM_VALVE_B, last_BM_VALVE_B);
   sendByteEvent(0x07, state_BM_VALVE_C, last_BM_VALVE_C);
   sendByteEvent(0x08, state_BM_MIX_VALVE, last_BM_MIX_VALVE);
+  sendByteEvent(0x09, BM_SOL_PUMP, last_BM_SOL_PUMP); // New Pump event
   sendByteEvent(0x0A, state_BM_MIX_PUMP, last_BM_MIX_PUMP);
   
   // ===== MIXER MODULE =====

@@ -5,7 +5,8 @@ float readUltrasonicCM(int trigPin, int echoPin) {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
-  long duration = pulseIn(echoPin, HIGH, 30000); // 30ms timeout
+  // Reduced timeout to 23529us (~4m max distance) to prevent long blocks
+  long duration = pulseIn(echoPin, HIGH, 23529); 
   if (duration == 0) return -1;
 
   float distance = duration * 0.034 / 2;
@@ -13,22 +14,23 @@ float readUltrasonicCM(int trigPin, int echoPin) {
 }
 float readPH(DFRobot_PH &ph_obj, int pin, float temperature, float offset) {
   long sum = 0;
-  for (int i = 0; i < 10; i++) {
+  // Reduce to 5 samples, faster interval, use yieldDelay
+  for (int i = 0; i < 5; i++) {
     sum += analogRead(pin);
-    delay(10);
+    yieldDelay(2); 
   }
-  float voltage = (sum / 10.0) / 1024.0 * 5000.0; // millivolts
+  float voltage = (sum / 5.0) / 1024.0 * 5000.0; // millivolts
   return ph_obj.readPH(voltage, temperature) + offset;
 }
 
 float readEC(int pin, float temperature) {
   long sum = 0;
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 5; i++) {
     sum += analogRead(pin);
-    delay(10);
+    yieldDelay(2);
   }
   // Convert to voltage millivolts (DFRobot Standard)
-  float voltage = (sum / 10.0) / 1024.0 * 5000.0; 
+  float voltage = (sum / 5.0) / 1024.0 * 5000.0; 
 
   // Use the official DFRobot_EC library math
   float ecValue = ec_master.readEC(voltage, temperature);
@@ -39,11 +41,11 @@ float readEC(int pin, float temperature) {
 
 float readTDS(int pin, float temperature) {
   long sum = 0;
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 5; i++) {
     sum += analogRead(pin);
-    delay(10);
+    yieldDelay(2);
   }
-  float voltage = (sum / 10.0) / 1024.0 * 5.0; // voltage in Volts
+  float voltage = (sum / 5.0) / 1024.0 * 5.0; // voltage in Volts
 
   // DFRobot TDS Temperature Compensation
   float compensationCoefficient = 1.0 + 0.02 * (temperature - 25.0);

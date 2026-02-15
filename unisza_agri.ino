@@ -10,30 +10,31 @@
    ================================================= */
 
 /* ===== CONTROL ROOM PINS ===== */
+#define PIN_CR_MAIN_PUMP        40
 #define PIN_CR_BUFFER_VALVE     44
 #define PIN_CR_GREENHOUSE_VALVE 45
-#define PIN_CR_MAIN_PUMP        40
-
-/* ===== SUBSTATION / GH ===== */
-#define PIN_SS_PUMP        43
-#define PIN_SS1_VALVE_1    5
-#define PIN_SS2_VALVE_1    6
-
 
 /* ===== BUFFER MIXER PINS ===== */
+#define PIN_BM_SOL_PUMP    41  // New Pump (ID 0x09)
+#define PIN_BM_MIX_PUMP    42  // Shared Pin
 #define PIN_BM_VALVE_A     46
 #define PIN_BM_VALVE_B     47
 #define PIN_BM_VALVE_C     48
 #define PIN_BM_MIX_VALVE   49
 
 /* ===== MIXER MODULE PINS ===== */
-#define PIN_MM_SOL_PUMP    43
+#define PIN_MM_SOL_PUMP    42  // Shared Pin with BM_MIX_PUMP
 #define PIN_MM_T1_IN       7
 #define PIN_MM_T1_OUT      10
 #define PIN_MM_T2_IN       8
 #define PIN_MM_T2_OUT      11
 #define PIN_MM_T3_IN       9
 #define PIN_MM_T3_OUT      12
+
+/* ===== SUBSTATION / GH ===== */
+#define PIN_SS_PUMP        43
+#define PIN_SS1_VALVE_1    5
+#define PIN_SS2_VALVE_1    6
 
 
 // -------- Master Sensor --------1
@@ -102,6 +103,7 @@ bool BM_VALVE_B = 0;
 bool BM_VALVE_C = 0;
 bool BM_MIX_VALVE = 0;
 bool BM_MIX_PUMP = 0;
+bool BM_SOL_PUMP = 0; // New Pump
 
 // Mixer Module
 bool MM_SOL_PUMP = 0;
@@ -143,6 +145,7 @@ bool last_BM_VALVE_B = 0;
 bool last_BM_VALVE_C = 0;
 bool last_BM_MIX_VALVE = 0;
 bool last_BM_MIX_PUMP = 0;
+bool last_BM_SOL_PUMP = 0;
 
 // Mixer Module
 bool last_MM_SOL_PUMP = 0;
@@ -209,7 +212,7 @@ byte RECIPE_WATER = 0;   // Target water level (0-100%)
    ================================================= */
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(PIN_CR_BUFFER_VALVE, OUTPUT);
   pinMode(PIN_CR_GREENHOUSE_VALVE, OUTPUT);
   pinMode(PIN_CR_MAIN_PUMP, OUTPUT);
@@ -219,6 +222,8 @@ void setup() {
   pinMode(PIN_BM_VALVE_B, OUTPUT);
   pinMode(PIN_BM_VALVE_C, OUTPUT);
   pinMode(PIN_BM_MIX_VALVE, OUTPUT);
+  pinMode(PIN_BM_MIX_PUMP, OUTPUT);
+  pinMode(PIN_BM_SOL_PUMP, OUTPUT);
 
   /* ===== MIXER MODULE ===== */
   pinMode(PIN_MM_SOL_PUMP, OUTPUT);
@@ -265,6 +270,16 @@ allOutputOff();
   digitalWrite(PIN_EC_PWR, HIGH); // Default to ON
 }
 
+/* =================================================
+   [3.5] YIELD DELAY - NON-BLOCKING WAIT
+   ================================================= */
+void yieldDelay(unsigned long ms) {
+  unsigned long start = millis();
+  while (millis() - start < ms) {
+    moduleSerialPI(); // Keep checking for commands!
+  }
+}
+
 
 /* =================================================
    [4] LOOP – MAIN CALL
@@ -273,19 +288,16 @@ void loop() {
 
   moduleSerialPI();       // command dari Pi
   
-  // Throttle sensor readings to 2 seconds
-  static unsigned long lastSensorRead = 0;
-  if (millis() - lastSensorRead >= 2000) {
-    moduleSensorMaster();   // sensor master
-    lastSensorRead = millis();
-  }
+  // Non-blocking sensor state machine
+  // Throttling is handled inside the module (SENSOR_INTERVAL)
+  moduleSensorMaster();
 
   if (SYSTEM_MODE) moduleManual();
   else moduleAuto();      // kosong dulu
 
   moduleStatusCheck(); // Moved here to read ACTUAL pin state AFTER writing
   
-  // moduleSendBytePI();     // DISABLED: Now using polling via moduleSerialPI (command 0xAA)
+  moduleSendBytePI(false);     // ENABLED: Auto-send every 2s for WebSocket stream
   sendEventStatusPI();
   initEventState();
 }
@@ -304,6 +316,7 @@ void initEventState()
   last_BM_VALVE_C   = state_BM_VALVE_C;
   last_BM_MIX_VALVE = state_BM_MIX_VALVE;
   last_BM_MIX_PUMP  = state_BM_MIX_PUMP;
+  last_BM_SOL_PUMP  = BM_SOL_PUMP; // Update tracker
 
   last_MM_SOL_PUMP = state_MM_SOL_PUMP;
 
