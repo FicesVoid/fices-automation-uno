@@ -4,7 +4,7 @@
 // ==================================================
 
 unsigned long lastSensorSend = 0;
-const unsigned long SENSOR_INTERVAL = 2000; // 2 seconds
+// SENSOR_INTERVAL is defined in MASTER_SENSOR_MODULE.ino
 
 // Overload for backward compatibility (defaults to not forced)
 void moduleSendBytePI(bool force = false);
