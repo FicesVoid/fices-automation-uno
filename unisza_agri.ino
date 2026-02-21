@@ -16,6 +16,7 @@
 
 /* ===== BUFFER MIXER PINS ===== */
 #define PIN_BM_MIX_PUMP    42  // Shared Pin
+#define PIN_BM_SOL_PUMP    41  // New Solution Pump for Fertilizer Tanks
 #define PIN_BM_VALVE_A     46
 #define PIN_BM_VALVE_B     47
 #define PIN_BM_VALVE_C     48
@@ -24,11 +25,11 @@
 /* ===== MIXER MODULE PINS ===== */
 #define PIN_MM_SOL_PUMP    39  // Dedicated Pin (previously shared with BM_MIX_PUMP on 42)
 #define PIN_MM_T1_IN       7
-#define PIN_MM_T1_OUT      10
-#define PIN_MM_T2_IN       8
-#define PIN_MM_T2_OUT      11
-#define PIN_MM_T3_IN       9
-#define PIN_MM_T3_OUT      12
+#define PIN_MM_T1_OUT      11
+#define PIN_MM_T2_IN       9
+#define PIN_MM_T2_OUT      12
+#define PIN_MM_T3_IN       10
+#define PIN_MM_T3_OUT      13
 
 /* ===== SUBSTATION / GH ===== */
 #define PIN_SS_PUMP        43
@@ -102,6 +103,7 @@ bool BM_VALVE_B = 0;
 bool BM_VALVE_C = 0;
 bool BM_MIX_VALVE = 0;
 bool BM_MIX_PUMP = 0;
+bool BM_SOL_PUMP = 0;
 
 // Mixer Module
 bool MM_SOL_PUMP = 0;
@@ -143,6 +145,7 @@ bool last_BM_VALVE_B = 0;
 bool last_BM_VALVE_C = 0;
 bool last_BM_MIX_VALVE = 0;
 bool last_BM_MIX_PUMP = 0;
+bool last_BM_SOL_PUMP = 0;
 
 // Mixer Module
 bool last_MM_SOL_PUMP = 0;
@@ -170,6 +173,7 @@ int state_BM_VALVE_B = 0;
 int state_BM_VALVE_C = 0;
 int state_BM_MIX_VALVE = 0;
 int state_BM_MIX_PUMP = 0;
+int state_BM_SOL_PUMP = 0;
 
 // Mixer Module
 int state_MM_SOL_PUMP = 0;
@@ -209,7 +213,7 @@ byte RECIPE_WATER = 0;   // Target water level (0-100%)
    ================================================= */
 void setup() {
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   pinMode(PIN_CR_BUFFER_VALVE, OUTPUT);
   pinMode(PIN_CR_GREENHOUSE_VALVE, OUTPUT);
   pinMode(PIN_CR_MAIN_PUMP, OUTPUT);
@@ -220,6 +224,7 @@ void setup() {
   pinMode(PIN_BM_VALVE_C, OUTPUT);
   pinMode(PIN_BM_MIX_VALVE, OUTPUT);
   pinMode(PIN_BM_MIX_PUMP, OUTPUT);
+  pinMode(PIN_BM_SOL_PUMP, OUTPUT);
 
   /* ===== MIXER MODULE ===== */
   pinMode(PIN_MM_SOL_PUMP, OUTPUT);
@@ -278,6 +283,7 @@ allOutputOff();
   last_BM_VALVE_C = !state_BM_VALVE_C;
   last_BM_MIX_VALVE = !state_BM_MIX_VALVE;
   last_BM_MIX_PUMP = !state_BM_MIX_PUMP;
+  last_BM_SOL_PUMP = !state_BM_SOL_PUMP;
   last_MM_SOL_PUMP = !state_MM_SOL_PUMP;
   last_MM_T1_IN = !state_MM_T1_IN;
   last_MM_T1_OUT = !state_MM_T1_OUT;
@@ -336,6 +342,7 @@ void initEventState()
   last_BM_VALVE_C   = state_BM_VALVE_C;
   last_BM_MIX_VALVE = state_BM_MIX_VALVE;
   last_BM_MIX_PUMP  = state_BM_MIX_PUMP;
+  last_BM_SOL_PUMP  = state_BM_SOL_PUMP;
 
   last_MM_SOL_PUMP = state_MM_SOL_PUMP;
 

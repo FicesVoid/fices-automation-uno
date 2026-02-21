@@ -7,6 +7,9 @@ void moduleStatusCheck() {
   // BM Mix Pump (Pin 42)
   state_BM_MIX_PUMP = !digitalRead(PIN_BM_MIX_PUMP);
 
+  // BM Solution Pump (Pin 41)
+  state_BM_SOL_PUMP = !digitalRead(PIN_BM_SOL_PUMP);
+
   // MM Solution Pump (Pin 39)
   state_MM_SOL_PUMP = !digitalRead(PIN_MM_SOL_PUMP);
 

@@ -20,6 +20,9 @@ void moduleManual() {
   /* ===== BM MIX PUMP (Pin 42) ===== */
   digitalWrite(PIN_BM_MIX_PUMP, BM_MIX_PUMP ? LOW : HIGH);
 
+  /* ===== BM SOL PUMP (Pin 41) ===== */
+  digitalWrite(PIN_BM_SOL_PUMP, BM_SOL_PUMP ? LOW : HIGH);
+
   /* ===== MM SOL PUMP (Pin 39) ===== */
   digitalWrite(PIN_MM_SOL_PUMP, MM_SOL_PUMP ? LOW : HIGH);
 
