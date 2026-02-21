@@ -336,7 +336,6 @@ void initEventState()
   last_BM_VALVE_C   = state_BM_VALVE_C;
   last_BM_MIX_VALVE = state_BM_MIX_VALVE;
   last_BM_MIX_PUMP  = state_BM_MIX_PUMP;
-  last_BM_SOL_PUMP  = BM_SOL_PUMP; // Update tracker
 
   last_MM_SOL_PUMP = state_MM_SOL_PUMP;
 
