@@ -11,7 +11,7 @@ void moduleStatusCheck() {
   state_BM_SOL_PUMP = !digitalRead(PIN_BM_SOL_PUMP);
 
   // MM Solution Pump (Pin 39)
-  state_MM_SOL_PUMP = !digitalRead(PIN_MM_SOL_PUMP);
+  state_MM_SUB_PUMP = !digitalRead(PIN_MM_SUB_PUMP);
 
   state_BM_MIX_VALVE = !digitalRead(PIN_BM_MIX_VALVE);
 
@@ -28,5 +28,4 @@ void moduleStatusCheck() {
 
   state_SS1_VALVE_1 = !digitalRead(PIN_SS1_VALVE_1);
   state_SS2_VALVE_1 = !digitalRead(PIN_SS2_VALVE_1);
-  state_SS_PUMP     = !digitalRead(PIN_SS_PUMP);
 }

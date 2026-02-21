@@ -28,7 +28,7 @@ void moduleSerialPI() {
       case 0x0A: BM_MIX_PUMP = val; break;
       
     // --- Mixer Module ---
-    case 0x0B: MM_SOL_PUMP = val; break;
+    case 0x0B: MM_SUB_PUMP = val; break;
     case 0x0C: MM_T1_IN    = val; break;
     case 0x0D: MM_T1_OUT   = val; break;
     case 0x0E: MM_T2_IN    = val; break;
@@ -37,7 +37,6 @@ void moduleSerialPI() {
     case 0x11: MM_T3_OUT   = val; break;
     
     // --- Others ---
-    case 0x12: SS_PUMP     = val; break;
     case 0x13: SS1_VALVE_1 = val; break;
     case 0x14: SS2_VALVE_1 = val; break;
 

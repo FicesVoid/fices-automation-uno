@@ -15,15 +15,15 @@
 #define PIN_CR_GREENHOUSE_VALVE 45
 
 /* ===== BUFFER MIXER PINS ===== */
-#define PIN_BM_MIX_PUMP    42  // Shared Pin
-#define PIN_BM_SOL_PUMP    41  // New Solution Pump for Fertilizer Tanks
+#define PIN_BM_MIX_PUMP    42  // mixer/distrubtor
+#define PIN_BM_SOL_PUMP    39  // New Solution Pump for Fertilizer Tanks
 #define PIN_BM_VALVE_A     46
 #define PIN_BM_VALVE_B     47
 #define PIN_BM_VALVE_C     48
 #define PIN_BM_MIX_VALVE   49
 
 /* ===== MIXER MODULE PINS ===== */
-#define PIN_MM_SOL_PUMP    39  // Dedicated Pin (previously shared with BM_MIX_PUMP on 42)
+#define PIN_MM_SUB_PUMP    43  // substation pump
 #define PIN_MM_T1_IN       7
 #define PIN_MM_T1_OUT      11
 #define PIN_MM_T2_IN       9
@@ -32,7 +32,6 @@
 #define PIN_MM_T3_OUT      13
 
 /* ===== SUBSTATION / GH ===== */
-#define PIN_SS_PUMP        43
 #define PIN_SS1_VALVE_1    5
 #define PIN_SS2_VALVE_1    6
 
@@ -106,7 +105,7 @@ bool BM_MIX_PUMP = 0;
 bool BM_SOL_PUMP = 0;
 
 // Mixer Module
-bool MM_SOL_PUMP = 0;
+bool MM_SUB_PUMP = 0;
 bool MM_T1_IN = 0;
 bool MM_T1_OUT = 0;
 bool MM_T2_IN = 0;
@@ -115,7 +114,6 @@ bool MM_T3_IN = 0;
 bool MM_T3_OUT = 0;
 
 // Others
-bool SS_PUMP = 0;
 bool SS1_VALVE_1 = 0;
 bool SS2_VALVE_1 = 0;
 
@@ -148,7 +146,7 @@ bool last_BM_MIX_PUMP = 0;
 bool last_BM_SOL_PUMP = 0;
 
 // Mixer Module
-bool last_MM_SOL_PUMP = 0;
+bool last_MM_SUB_PUMP = 0;
 bool last_MM_T1_IN = 0;
 bool last_MM_T1_OUT = 0;
 bool last_MM_T2_IN = 0;
@@ -157,7 +155,6 @@ bool last_MM_T3_IN = 0;
 bool last_MM_T3_OUT = 0;
 
 // Substation
-bool last_SS_PUMP = 0;
 bool last_SS1_VALVE_1 = 0;
 bool last_SS2_VALVE_1 = 0;
 
@@ -176,7 +173,7 @@ int state_BM_MIX_PUMP = 0;
 int state_BM_SOL_PUMP = 0;
 
 // Mixer Module
-int state_MM_SOL_PUMP = 0;
+int state_MM_SUB_PUMP = 0;
 int state_MM_T1_IN = 0;
 int state_MM_T1_OUT = 0;
 int state_MM_T2_IN = 0;
@@ -185,7 +182,6 @@ int state_MM_T3_IN = 0;
 int state_MM_T3_OUT = 0;
 
 // Substation
-int state_SS_PUMP = 0;
 int state_SS1_VALVE_1 = 0;
 int state_SS2_VALVE_1 = 0;
 
@@ -227,7 +223,7 @@ void setup() {
   pinMode(PIN_BM_SOL_PUMP, OUTPUT);
 
   /* ===== MIXER MODULE ===== */
-  pinMode(PIN_MM_SOL_PUMP, OUTPUT);
+  pinMode(PIN_MM_SUB_PUMP, OUTPUT);
   pinMode(PIN_MM_T1_IN, OUTPUT);
   pinMode(PIN_MM_T1_OUT, OUTPUT);
   pinMode(PIN_MM_T2_IN, OUTPUT);
@@ -253,7 +249,6 @@ void setup() {
   pinMode(T3_ECHO_PIN, INPUT);
 
     /* ===== SUBSTATION ===== */
-  pinMode(PIN_SS_PUMP,     OUTPUT);
   pinMode(PIN_SS1_VALVE_1, OUTPUT);
   pinMode(PIN_SS2_VALVE_1, OUTPUT);
 
@@ -284,14 +279,13 @@ allOutputOff();
   last_BM_MIX_VALVE = !state_BM_MIX_VALVE;
   last_BM_MIX_PUMP = !state_BM_MIX_PUMP;
   last_BM_SOL_PUMP = !state_BM_SOL_PUMP;
-  last_MM_SOL_PUMP = !state_MM_SOL_PUMP;
+  last_MM_SUB_PUMP = !state_MM_SUB_PUMP;
   last_MM_T1_IN = !state_MM_T1_IN;
   last_MM_T1_OUT = !state_MM_T1_OUT;
   last_MM_T2_IN = !state_MM_T2_IN;
   last_MM_T2_OUT = !state_MM_T2_OUT;
   last_MM_T3_IN = !state_MM_T3_IN;
   last_MM_T3_OUT = !state_MM_T3_OUT;
-  last_SS_PUMP = !state_SS_PUMP;
   last_SS1_VALVE_1 = !state_SS1_VALVE_1;
   last_SS2_VALVE_1 = !state_SS2_VALVE_1;
 }
@@ -344,7 +338,7 @@ void initEventState()
   last_BM_MIX_PUMP  = state_BM_MIX_PUMP;
   last_BM_SOL_PUMP  = state_BM_SOL_PUMP;
 
-  last_MM_SOL_PUMP = state_MM_SOL_PUMP;
+  last_MM_SUB_PUMP = state_MM_SUB_PUMP;
 
   last_MM_T1_IN  = state_MM_T1_IN;
   last_MM_T1_OUT = state_MM_T1_OUT;
@@ -353,7 +347,6 @@ void initEventState()
   last_MM_T3_IN  = state_MM_T3_IN;
   last_MM_T3_OUT = state_MM_T3_OUT;
 
-  last_SS_PUMP = state_SS_PUMP;
   last_SS1_VALVE_1 = state_SS1_VALVE_1;
   last_SS2_VALVE_1 = state_SS2_VALVE_1;
 }

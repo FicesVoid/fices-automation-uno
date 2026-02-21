@@ -24,7 +24,7 @@ void moduleManual() {
   digitalWrite(PIN_BM_SOL_PUMP, BM_SOL_PUMP ? LOW : HIGH);
 
   /* ===== MM SOL PUMP (Pin 39) ===== */
-  digitalWrite(PIN_MM_SOL_PUMP, MM_SOL_PUMP ? LOW : HIGH);
+  digitalWrite(PIN_MM_SUB_PUMP, MM_SUB_PUMP ? LOW : HIGH);
 
   
   digitalWrite(PIN_MM_T1_IN,    MM_T1_IN    ? LOW : HIGH);
@@ -35,7 +35,6 @@ void moduleManual() {
   digitalWrite(PIN_MM_T3_OUT,   MM_T3_OUT   ? LOW : HIGH);
 
   /* ===== SUBSTATION ===== */
-  digitalWrite(PIN_SS_PUMP,     SS_PUMP     ? LOW : HIGH);
   digitalWrite(PIN_SS1_VALVE_1, SS1_VALVE_1 ? LOW : HIGH);
   digitalWrite(PIN_SS2_VALVE_1, SS2_VALVE_1 ? LOW : HIGH);
 

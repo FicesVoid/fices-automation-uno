@@ -101,7 +101,7 @@ void sendEventStatusPI() {
   sendByteEvent(0x0A, state_BM_MIX_PUMP, last_BM_MIX_PUMP);
   
   // ===== MIXER MODULE =====
-  sendByteEvent(0x0B, state_MM_SOL_PUMP, last_MM_SOL_PUMP);
+  sendByteEvent(0x0B, state_MM_SUB_PUMP, last_MM_SUB_PUMP);
   sendByteEvent(0x0C, state_MM_T1_IN, last_MM_T1_IN);
   sendByteEvent(0x0D, state_MM_T1_OUT, last_MM_T1_OUT);
   sendByteEvent(0x0E, state_MM_T2_IN, last_MM_T2_IN);
@@ -110,7 +110,6 @@ void sendEventStatusPI() {
   sendByteEvent(0x11, state_MM_T3_OUT, last_MM_T3_OUT);
   
   // ===== SUBSTATION =====
-  sendByteEvent(0x12, state_SS_PUMP, last_SS_PUMP);
   sendByteEvent(0x13, state_SS1_VALVE_1, last_SS1_VALVE_1);
   sendByteEvent(0x14, state_SS2_VALVE_1, last_SS2_VALVE_1);
 }
