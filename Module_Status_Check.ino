@@ -4,13 +4,11 @@ void moduleStatusCheck() {
   state_CR_GREENHOUSE_VALVE = !digitalRead(PIN_CR_GREENHOUSE_VALVE);
   state_CR_MAIN_PUMP        = !digitalRead(PIN_CR_MAIN_PUMP);
 
-  // MM Solution Pump (Pin 43)
-  state_MM_SOL_PUMP = !digitalRead(PIN_MM_SOL_PUMP);
-
   // BM Mix Pump (Pin 42)
-  state_BM_MIX_PUMP = !digitalRead(42);
+  state_BM_MIX_PUMP = !digitalRead(PIN_BM_MIX_PUMP);
 
-     // Often redundant if shared
+  // MM Solution Pump (Pin 39)
+  state_MM_SOL_PUMP = !digitalRead(PIN_MM_SOL_PUMP);
 
   state_BM_MIX_VALVE = !digitalRead(PIN_BM_MIX_VALVE);
 

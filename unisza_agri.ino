@@ -15,7 +15,6 @@
 #define PIN_CR_GREENHOUSE_VALVE 45
 
 /* ===== BUFFER MIXER PINS ===== */
-#define PIN_BM_SOL_PUMP    41  // New Pump (ID 0x09)
 #define PIN_BM_MIX_PUMP    42  // Shared Pin
 #define PIN_BM_VALVE_A     46
 #define PIN_BM_VALVE_B     47
@@ -23,7 +22,7 @@
 #define PIN_BM_MIX_VALVE   49
 
 /* ===== MIXER MODULE PINS ===== */
-#define PIN_MM_SOL_PUMP    42  // Shared Pin with BM_MIX_PUMP
+#define PIN_MM_SOL_PUMP    39  // Dedicated Pin (previously shared with BM_MIX_PUMP on 42)
 #define PIN_MM_T1_IN       7
 #define PIN_MM_T1_OUT      10
 #define PIN_MM_T2_IN       8
@@ -103,7 +102,6 @@ bool BM_VALVE_B = 0;
 bool BM_VALVE_C = 0;
 bool BM_MIX_VALVE = 0;
 bool BM_MIX_PUMP = 0;
-bool BM_SOL_PUMP = 0; // New Pump
 
 // Mixer Module
 bool MM_SOL_PUMP = 0;
@@ -145,7 +143,6 @@ bool last_BM_VALVE_B = 0;
 bool last_BM_VALVE_C = 0;
 bool last_BM_MIX_VALVE = 0;
 bool last_BM_MIX_PUMP = 0;
-bool last_BM_SOL_PUMP = 0;
 
 // Mixer Module
 bool last_MM_SOL_PUMP = 0;
@@ -223,7 +220,6 @@ void setup() {
   pinMode(PIN_BM_VALVE_C, OUTPUT);
   pinMode(PIN_BM_MIX_VALVE, OUTPUT);
   pinMode(PIN_BM_MIX_PUMP, OUTPUT);
-  pinMode(PIN_BM_SOL_PUMP, OUTPUT);
 
   /* ===== MIXER MODULE ===== */
   pinMode(PIN_MM_SOL_PUMP, OUTPUT);
@@ -268,6 +264,30 @@ allOutputOff();
 
   pinMode(PIN_EC_PWR, OUTPUT);
   digitalWrite(PIN_EC_PWR, HIGH); // Default to ON
+
+  // --- ARDUINO BOOT SYNC ---
+  // Invert all `last_` state trackers. On the first `loop()`, `sendEventStatusPI()` 
+  // will see the difference and forcefully broadcast the entire true OFF state back to Python, 
+  // instantly curing any DB desynchronization caused by reboot/power loss.
+  last_SYSTEM_MODE = !SYSTEM_MODE;
+  last_CR_MAIN_PUMP = !state_CR_MAIN_PUMP;
+  last_CR_BUFFER_VALVE = !state_CR_BUFFER_VALVE;
+  last_CR_GREENHOUSE_VALVE = !state_CR_GREENHOUSE_VALVE;
+  last_BM_VALVE_A = !state_BM_VALVE_A;
+  last_BM_VALVE_B = !state_BM_VALVE_B;
+  last_BM_VALVE_C = !state_BM_VALVE_C;
+  last_BM_MIX_VALVE = !state_BM_MIX_VALVE;
+  last_BM_MIX_PUMP = !state_BM_MIX_PUMP;
+  last_MM_SOL_PUMP = !state_MM_SOL_PUMP;
+  last_MM_T1_IN = !state_MM_T1_IN;
+  last_MM_T1_OUT = !state_MM_T1_OUT;
+  last_MM_T2_IN = !state_MM_T2_IN;
+  last_MM_T2_OUT = !state_MM_T2_OUT;
+  last_MM_T3_IN = !state_MM_T3_IN;
+  last_MM_T3_OUT = !state_MM_T3_OUT;
+  last_SS_PUMP = !state_SS_PUMP;
+  last_SS1_VALVE_1 = !state_SS1_VALVE_1;
+  last_SS2_VALVE_1 = !state_SS2_VALVE_1;
 }
 
 /* =================================================

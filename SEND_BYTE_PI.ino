@@ -97,7 +97,6 @@ void sendEventStatusPI() {
   sendByteEvent(0x06, state_BM_VALVE_B, last_BM_VALVE_B);
   sendByteEvent(0x07, state_BM_VALVE_C, last_BM_VALVE_C);
   sendByteEvent(0x08, state_BM_MIX_VALVE, last_BM_MIX_VALVE);
-  sendByteEvent(0x09, BM_SOL_PUMP, last_BM_SOL_PUMP); // New Pump event
   sendByteEvent(0x0A, state_BM_MIX_PUMP, last_BM_MIX_PUMP);
   
   // ===== MIXER MODULE =====
