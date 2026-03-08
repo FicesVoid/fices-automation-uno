@@ -36,6 +36,11 @@
 #define PIN_SS2_VALVE_1    6
 
 
+/* ===== BUTTONS ===== */
+#define PIN_BTN_START    53
+#define PIN_BTN_RESET    52
+#define PIN_BTN_STOP     51
+
 // -------- Master Sensor --------1
 #define TEMP_PIN           38
 #define PH1_PIN            A0
@@ -252,6 +257,11 @@ void setup() {
   pinMode(PIN_SS1_VALVE_1, OUTPUT);
   pinMode(PIN_SS2_VALVE_1, OUTPUT);
 
+    /* ===== BUTTONS ===== */
+  pinMode(PIN_BTN_START, INPUT_PULLUP);
+  pinMode(PIN_BTN_STOP,  INPUT_PULLUP);
+  pinMode(PIN_BTN_RESET, INPUT_PULLUP);
+
 allOutputOff();
 
   // LoRa initialization removed
@@ -311,6 +321,9 @@ void loop() {
   // Non-blocking sensor state machine
   // Throttling is handled inside the module (SENSOR_INTERVAL)
   moduleSensorMaster();
+
+  // Read physical buttons (START/STOP/RESET)
+  moduleButtons();
 
   if (SYSTEM_MODE) moduleManual();
   else moduleAuto();      // kosong dulu
