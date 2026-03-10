@@ -89,25 +89,14 @@ void moduleSensorMaster() {
       t3tds = readTDS(T3_TDS_PIN, t3t);
 
       /* ===== ULTRASONIC ===== */
-      // Reads are fast enough to keep inline or could split further
-      va  = readUltrasonicCM(VA_TRIG_PIN, VA_ECHO_PIN); 
-      vb  = readUltrasonicCM(VB_TRIG_PIN, VB_ECHO_PIN); 
-      vc  = readUltrasonicCM(VC_TRIG_PIN, VC_ECHO_PIN); 
-      mtl = readUltrasonicCM(MTL_TRIG_PIN, MTL_ECHO_PIN); 
-      btl = readUltrasonicCM(BTL_TRIG_PIN, BTL_ECHO_PIN); 
-      t1l = readUltrasonicCM(T1_TRIG_PIN, T1_ECHO_PIN); 
-      t2l = readUltrasonicCM(T2_TRIG_PIN, T2_ECHO_PIN); 
-      t3l = readUltrasonicCM(T3_TRIG_PIN, T3_ECHO_PIN);
-
-      /* ===== CONVERT TO % ===== */
-      mtl = levelToPercent(mtl, 10, 150);
-      btl = levelToPercent(btl, 10, 120);
-      va  = levelToPercent(va, 10, 80);
-      vb  = levelToPercent(vb, 10, 80);
-      vc  = levelToPercent(vc, 10, 80);
-      t1l = levelToPercent(t1l, 10, 100);
-      t2l = levelToPercent(t2l, 10, 100);
-      t3l = levelToPercent(t3l, 10, 100);
+      va  = readTankPercentage(VA_TRIG_PIN, VA_ECHO_PIN, 80); 
+      vb  = readTankPercentage(VB_TRIG_PIN, VB_ECHO_PIN, 80); 
+      vc  = readTankPercentage(VC_TRIG_PIN, VC_ECHO_PIN, 80); 
+      mtl = readTankPercentage(MTL_TRIG_PIN, MTL_ECHO_PIN, 150); 
+      btl = readTankPercentage(BTL_TRIG_PIN, BTL_ECHO_PIN, 120); 
+      t1l = readTankPercentage(T1_TRIG_PIN, T1_ECHO_PIN, 100); 
+      t2l = readTankPercentage(T2_TRIG_PIN, T2_ECHO_PIN, 100); 
+      t3l = readTankPercentage(T3_TRIG_PIN, T3_ECHO_PIN, 100);
 
       // Done!
       sensorTimer = currentMillis; // Reset idle timer base

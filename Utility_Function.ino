@@ -1,16 +1,69 @@
-float readUltrasonicCM(int trigPin, int echoPin) {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+// Helper function to sort array for median filter
+void sortArray(long a[], int size) {
+  for(int i=0; i<(size-1); i++) {
+    for(int o=0; o<(size-(i+1)); o++) {
+      if(a[o] > a[o+1]) {
+        long t = a[o];
+        a[o] = a[o+1];
+        a[o+1] = t;
+      }
+    }
+  }
+}
 
-  // Reduced timeout to 23529us (~4m max distance) to prevent long blocks
-  long duration = pulseIn(echoPin, HIGH, 23529); 
-  if (duration == 0) return -1;
+int readTankPercentage(int trigPin, int echoPin, float tankHeightCm) {
+  const int numSamples = 5;
+  long raw_echo_us[numSamples];
+  int validSamples = 0;
 
-  float distance = duration * 0.034 / 2;
-  return distance; // cm
+  // STEP 1 - Read 5 samples
+  for (int i = 0; i < numSamples; i++) {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+
+    // Timeout ~25000us (max ~400cm distance)
+    long duration = pulseIn(echoPin, HIGH, 25000); 
+
+    // Clean data: Ignore values < 1000us (~17cm min distance to ignore deadzone) or > 25000us
+    // We'll relax the minimum slightly in case tank is totally full to 500us (~8.5cm).
+    if (duration >= 500 && duration <= 25000) {
+      raw_echo_us[validSamples] = duration;
+      validSamples++;
+    }
+    delay(5); // Small delay between pings
+  }
+
+  if (validSamples == 0) return -1; // Sensor error / timeout
+
+  // STEP 2 - Remove outliers by finding the median
+  sortArray(raw_echo_us, validSamples);
+  long median_echo_us;
+  if (validSamples % 2 == 0) {
+    median_echo_us = (raw_echo_us[(validSamples / 2) - 1] + raw_echo_us[validSamples / 2]) / 2;
+  } else {
+    median_echo_us = raw_echo_us[validSamples / 2];
+  }
+
+  // STEP 3 - Convert time to distance
+  float distance_cm = median_echo_us / 58.0;
+
+  // STEP 4 - Calculate water level
+  float water_level_cm = tankHeightCm - distance_cm;
+  if (water_level_cm < 0) water_level_cm = 0;
+
+  // STEP 5 - Calculate tank percentage
+  // We use tankHeightCm as the max possible depth capacity.
+  float tank_percentage = (water_level_cm / tankHeightCm) * 100.0;
+  
+  // Clamp heavily
+  if (tank_percentage > 100.0) tank_percentage = 100.0;
+  if (tank_percentage < 0.0) tank_percentage = 0.0;
+
+  // STEP 6 - Return rounded integer
+  return round(tank_percentage);
 }
 float readPH(DFRobot_PH &ph_obj, int pin, float temperature, float offset) {
   long sum = 0;
