@@ -56,7 +56,7 @@ void moduleSensorMaster() {
       break;
 
     case SENSOR_WAIT_PH_STABLE:
-      if (currentMillis - sensorTimer >= 50) { // Short settle time
+      if (currentMillis - sensorTimer >= 500) { // Wait 500ms for power noise to dissipate
         sensorState = SENSOR_READ_PH;
       }
       break;
@@ -74,7 +74,7 @@ void moduleSensorMaster() {
       break;
 
     case SENSOR_WAIT_EC_STABLE:
-      if (currentMillis - sensorTimer >= 500) { // Stabilization time
+      if (currentMillis - sensorTimer >= 800) { // Wait 800ms for EC pulse to stabilize
         sensorState = SENSOR_READ_EC;
       }
       break;

@@ -1,9 +1,22 @@
-// Helper function to sort array for median filter
+// Helper function to sort array for median filter (long)
 void sortArray(long a[], int size) {
   for(int i=0; i<(size-1); i++) {
     for(int o=0; o<(size-(i+1)); o++) {
       if(a[o] > a[o+1]) {
         long t = a[o];
+        a[o] = a[o+1];
+        a[o+1] = t;
+      }
+    }
+  }
+}
+
+// Helper function to sort array for median filter (int)
+void sortArrayInt(int a[], int size) {
+  for(int i=0; i<(size-1); i++) {
+    for(int o=0; o<(size-(i+1)); o++) {
+      if(a[o] > a[o+1]) {
+        int t = a[o];
         a[o] = a[o+1];
         a[o+1] = t;
       }
@@ -66,24 +79,46 @@ int readTankPercentage(int trigPin, int echoPin, float tankHeightCm) {
   return round(tank_percentage);
 }
 float readPH(DFRobot_PH &ph_obj, int pin, float temperature, float offset) {
-  long sum = 0;
-  // Reduce to 5 samples, faster interval, use yieldDelay
-  for (int i = 0; i < 5; i++) {
-    sum += analogRead(pin);
-    yieldDelay(2); 
+  const int SCOUNT = 30; // 30 samples for better stability
+  int analogBuffer[SCOUNT];
+  
+  // Read samples with delay
+  for (int i = 0; i < SCOUNT; i++) {
+    analogBuffer[i] = analogRead(pin);
+    yieldDelay(10); // 10ms between samples => 300ms total read time
   }
-  float voltage = (sum / 5.0) / 1024.0 * 5000.0; // millivolts
+  
+  // Sort for median filter
+  sortArrayInt(analogBuffer, SCOUNT);
+  
+  // Average the middle 10 samples (ignore extremes)
+  long sum = 0;
+  for (int i = 10; i < 20; i++) {
+    sum += analogBuffer[i];
+  }
+  
+  float voltage = (sum / 10.0) / 1024.0 * 5000.0; // millivolts
   return ph_obj.readPH(voltage, temperature) + offset;
 }
 
 float readEC(int pin, float temperature) {
-  long sum = 0;
-  for (int i = 0; i < 5; i++) {
-    sum += analogRead(pin);
-    yieldDelay(2);
+  const int SCOUNT = 30;
+  int analogBuffer[SCOUNT];
+  
+  for (int i = 0; i < SCOUNT; i++) {
+    analogBuffer[i] = analogRead(pin);
+    yieldDelay(10);
   }
+  
+  sortArrayInt(analogBuffer, SCOUNT);
+  
+  long sum = 0;
+  for (int i = 10; i < 20; i++) {
+    sum += analogBuffer[i];
+  }
+
   // Convert to voltage millivolts (DFRobot Standard)
-  float voltage = (sum / 5.0) / 1024.0 * 5000.0; 
+  float voltage = (sum / 10.0) / 1024.0 * 5000.0; 
 
   // Use the official DFRobot_EC library math
   float ecValue = ec_master.readEC(voltage, temperature);
@@ -93,12 +128,22 @@ float readEC(int pin, float temperature) {
 }
 
 float readTDS(int pin, float temperature) {
-  long sum = 0;
-  for (int i = 0; i < 5; i++) {
-    sum += analogRead(pin);
-    yieldDelay(2);
+  const int SCOUNT = 30;
+  int analogBuffer[SCOUNT];
+  
+  for (int i = 0; i < SCOUNT; i++) {
+    analogBuffer[i] = analogRead(pin);
+    yieldDelay(10);
   }
-  float voltage = (sum / 5.0) / 1024.0 * 5.0; // voltage in Volts
+  
+  sortArrayInt(analogBuffer, SCOUNT);
+  
+  long sum = 0;
+  for (int i = 10; i < 20; i++) {
+    sum += analogBuffer[i];
+  }
+  
+  float voltage = (sum / 10.0) / 1024.0 * 5.0; // voltage in Volts
 
   // DFRobot TDS Temperature Compensation
   float compensationCoefficient = 1.0 + 0.02 * (temperature - 25.0);
