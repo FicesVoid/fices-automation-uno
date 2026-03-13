@@ -16,10 +16,9 @@
 
 /* ===== BUFFER MIXER PINS ===== */
 #define PIN_BM_MIX_PUMP    42  // mixer/distrubtor
-#define PIN_BM_SOL_PUMP    39  // New Solution Pump for Fertilizer Tanks
-#define PIN_BM_VALVE_A     46
-#define PIN_BM_VALVE_B     47
-#define PIN_BM_VALVE_C     48
+#define PIN_BM_DOSING_A    46  // Dosing Pump A (was Valve A)
+#define PIN_BM_DOSING_B    47  // Dosing Pump B (was Valve B)
+#define PIN_BM_DOSING_C    48  // Dosing Pump C (was Valve C)
 #define PIN_BM_MIX_VALVE   49
 
 /* ===== MIXER MODULE PINS ===== */
@@ -102,12 +101,11 @@ bool CR_GREENHOUSE_VALVE = 0;
 bool CR_MAIN_PUMP = 0;
 
 // Buffer Mixer
-bool BM_VALVE_A = 0;
-bool BM_VALVE_B = 0;
-bool BM_VALVE_C = 0;
+bool BM_DOSING_A = 0;
+bool BM_DOSING_B = 0;
+bool BM_DOSING_C = 0;
 bool BM_MIX_VALVE = 0;
 bool BM_MIX_PUMP = 0;
-bool BM_SOL_PUMP = 0;
 
 // Mixer Module
 bool MM_SUB_PUMP = 0;
@@ -143,12 +141,11 @@ bool last_CR_GREENHOUSE_VALVE = 0;
 bool last_CR_MAIN_PUMP = 0;
 
 // Buffer Mixer
-bool last_BM_VALVE_A = 0;
-bool last_BM_VALVE_B = 0;
-bool last_BM_VALVE_C = 0;
+bool last_BM_DOSING_A = 0;
+bool last_BM_DOSING_B = 0;
+bool last_BM_DOSING_C = 0;
 bool last_BM_MIX_VALVE = 0;
 bool last_BM_MIX_PUMP = 0;
-bool last_BM_SOL_PUMP = 0;
 
 // Mixer Module
 bool last_MM_SUB_PUMP = 0;
@@ -170,12 +167,11 @@ int state_CR_GREENHOUSE_VALVE = 0;
 int state_CR_MAIN_PUMP = 0;
 
 // Buffer Mixer
-int state_BM_VALVE_A = 0;
-int state_BM_VALVE_B = 0;
-int state_BM_VALVE_C = 0;
+int state_BM_DOSING_A = 0;
+int state_BM_DOSING_B = 0;
+int state_BM_DOSING_C = 0;
 int state_BM_MIX_VALVE = 0;
 int state_BM_MIX_PUMP = 0;
-int state_BM_SOL_PUMP = 0;
 
 // Mixer Module
 int state_MM_SUB_PUMP = 0;
@@ -220,12 +216,11 @@ void setup() {
   pinMode(PIN_CR_MAIN_PUMP, OUTPUT);
 
   /* ===== BUFFER MIXER ===== */
-  pinMode(PIN_BM_VALVE_A, OUTPUT);
-  pinMode(PIN_BM_VALVE_B, OUTPUT);
-  pinMode(PIN_BM_VALVE_C, OUTPUT);
+  pinMode(PIN_BM_DOSING_A, OUTPUT);
+  pinMode(PIN_BM_DOSING_B, OUTPUT);
+  pinMode(PIN_BM_DOSING_C, OUTPUT);
   pinMode(PIN_BM_MIX_VALVE, OUTPUT);
   pinMode(PIN_BM_MIX_PUMP, OUTPUT);
-  pinMode(PIN_BM_SOL_PUMP, OUTPUT);
 
   /* ===== MIXER MODULE ===== */
   pinMode(PIN_MM_SUB_PUMP, OUTPUT);
@@ -275,20 +270,43 @@ allOutputOff();
   pinMode(PIN_EC_PWR, OUTPUT);
   digitalWrite(PIN_EC_PWR, HIGH); // Default to ON
 
+  // --- EEPROM STATE RESTORE ---
+  // Load saved states from EEPROM (survives power loss)
+  // This sets SYSTEM_MODE, CR_*, BM_*, MM_*, SS* variables
+  loadStateFromEEPROM();
+
+  // Apply restored states to physical pins immediately
+  digitalWrite(PIN_CR_MAIN_PUMP,        CR_MAIN_PUMP        ? LOW : HIGH);
+  digitalWrite(PIN_CR_BUFFER_VALVE,     CR_BUFFER_VALVE     ? LOW : HIGH);
+  digitalWrite(PIN_CR_GREENHOUSE_VALVE, CR_GREENHOUSE_VALVE ? LOW : HIGH);
+  digitalWrite(PIN_BM_DOSING_A,         BM_DOSING_A         ? LOW : HIGH);
+  digitalWrite(PIN_BM_DOSING_B,         BM_DOSING_B         ? LOW : HIGH);
+  digitalWrite(PIN_BM_DOSING_C,         BM_DOSING_C         ? LOW : HIGH);
+  digitalWrite(PIN_BM_MIX_VALVE,        BM_MIX_VALVE        ? LOW : HIGH);
+  digitalWrite(PIN_BM_MIX_PUMP,         BM_MIX_PUMP         ? LOW : HIGH);
+  digitalWrite(PIN_MM_SUB_PUMP,         MM_SUB_PUMP         ? LOW : HIGH);
+  digitalWrite(PIN_MM_T1_IN,            MM_T1_IN            ? LOW : HIGH);
+  digitalWrite(PIN_MM_T1_OUT,           MM_T1_OUT           ? LOW : HIGH);
+  digitalWrite(PIN_MM_T2_IN,            MM_T2_IN            ? LOW : HIGH);
+  digitalWrite(PIN_MM_T2_OUT,           MM_T2_OUT           ? LOW : HIGH);
+  digitalWrite(PIN_MM_T3_IN,            MM_T3_IN            ? LOW : HIGH);
+  digitalWrite(PIN_MM_T3_OUT,           MM_T3_OUT           ? LOW : HIGH);
+  digitalWrite(PIN_SS1_VALVE_1,         SS1_VALVE_1         ? LOW : HIGH);
+  digitalWrite(PIN_SS2_VALVE_1,         SS2_VALVE_1         ? LOW : HIGH);
+
   // --- ARDUINO BOOT SYNC ---
   // Invert all `last_` state trackers. On the first `loop()`, `sendEventStatusPI()` 
-  // will see the difference and forcefully broadcast the entire true OFF state back to Python, 
+  // will see the difference and forcefully broadcast the EEPROM-restored state back to Python, 
   // instantly curing any DB desynchronization caused by reboot/power loss.
   last_SYSTEM_MODE = !SYSTEM_MODE;
   last_CR_MAIN_PUMP = !state_CR_MAIN_PUMP;
   last_CR_BUFFER_VALVE = !state_CR_BUFFER_VALVE;
   last_CR_GREENHOUSE_VALVE = !state_CR_GREENHOUSE_VALVE;
-  last_BM_VALVE_A = !state_BM_VALVE_A;
-  last_BM_VALVE_B = !state_BM_VALVE_B;
-  last_BM_VALVE_C = !state_BM_VALVE_C;
+  last_BM_DOSING_A = !state_BM_DOSING_A;
+  last_BM_DOSING_B = !state_BM_DOSING_B;
+  last_BM_DOSING_C = !state_BM_DOSING_C;
   last_BM_MIX_VALVE = !state_BM_MIX_VALVE;
   last_BM_MIX_PUMP = !state_BM_MIX_PUMP;
-  last_BM_SOL_PUMP = !state_BM_SOL_PUMP;
   last_MM_SUB_PUMP = !state_MM_SUB_PUMP;
   last_MM_T1_IN = !state_MM_T1_IN;
   last_MM_T1_OUT = !state_MM_T1_OUT;
@@ -332,6 +350,7 @@ void loop() {
   
   moduleSendBytePI(false);     // ENABLED: Auto-send every 2s for WebSocket stream
   sendEventStatusPI();
+  sendStateHeartbeat();        // HEARTBEAT: Send full state dump every 30s (0xFC)
   initEventState();
 }
 

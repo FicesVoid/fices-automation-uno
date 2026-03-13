@@ -93,11 +93,10 @@ void sendEventStatusPI() {
   sendByteEvent(0x04, state_CR_GREENHOUSE_VALVE, last_CR_GREENHOUSE_VALVE);
   
   // ===== BUFFER MIXER =====
-  sendByteEvent(0x05, state_BM_VALVE_A, last_BM_VALVE_A);
-  sendByteEvent(0x06, state_BM_VALVE_B, last_BM_VALVE_B);
-  sendByteEvent(0x07, state_BM_VALVE_C, last_BM_VALVE_C);
+  sendByteEvent(0x05, state_BM_DOSING_A, last_BM_DOSING_A);
+  sendByteEvent(0x06, state_BM_DOSING_B, last_BM_DOSING_B);
+  sendByteEvent(0x07, state_BM_DOSING_C, last_BM_DOSING_C);
   sendByteEvent(0x08, state_BM_MIX_VALVE, last_BM_MIX_VALVE);
-  sendByteEvent(0x09, state_BM_SOL_PUMP, last_BM_SOL_PUMP);
   sendByteEvent(0x0A, state_BM_MIX_PUMP, last_BM_MIX_PUMP);
   
   // ===== MIXER MODULE =====

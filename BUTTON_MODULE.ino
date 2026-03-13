@@ -18,12 +18,14 @@ void moduleButtons() {
   if (current_start == LOW && last_btn_start == HIGH) {
     Serial.println("BTN: START PRESSED -> AUTO MODE");
     SYSTEM_MODE = 0; // 0 = Auto Mode
+    saveStateToEEPROM();
   }
 
   // 2. STOP BUTTON (Manual Mode) (Pressed = LOW)
   if (current_stop == LOW && last_btn_stop == HIGH) {
     Serial.println("BTN: STOP PRESSED -> MANUAL MODE");
     SYSTEM_MODE = 1; // 1 = Manual Mode
+    saveStateToEEPROM();
   }
 
   // 3. RESET BUTTON (Pressed = LOW)
@@ -41,12 +43,11 @@ void moduleButtons() {
     state_CR_BUFFER_VALVE = 0;
     state_CR_GREENHOUSE_VALVE = 0;
     
-    state_BM_VALVE_A = 0;
-    state_BM_VALVE_B = 0;
-    state_BM_VALVE_C = 0;
+    state_BM_DOSING_A = 0;
+    state_BM_DOSING_B = 0;
+    state_BM_DOSING_C = 0;
     state_BM_MIX_VALVE = 0;
     state_BM_MIX_PUMP = 0;
-    state_BM_SOL_PUMP = 0;
     
     state_MM_SUB_PUMP = 0;
     state_MM_T1_IN = 0;
@@ -59,6 +60,9 @@ void moduleButtons() {
     state_SS1_VALVE_1 = 0;
     state_SS2_VALVE_1 = 0;
     
+    // Save all-OFF state to EEPROM
+    saveStateToEEPROM();
+
     // Send explicit hardware reset byte to PI (0x15)
     Serial.write(0xFE);
     Serial.write(0x15);

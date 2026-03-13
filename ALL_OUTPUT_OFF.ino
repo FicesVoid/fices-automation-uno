@@ -4,11 +4,10 @@ void allOutputOff() {
   digitalWrite(PIN_CR_GREENHOUSE_VALVE, HIGH);
   digitalWrite(PIN_CR_MAIN_PUMP,        HIGH);
 
-  digitalWrite(PIN_BM_VALVE_A,     HIGH);
-  digitalWrite(PIN_BM_VALVE_B,     HIGH);
-  digitalWrite(PIN_BM_VALVE_C,     HIGH);
+  digitalWrite(PIN_BM_DOSING_A,    HIGH);
+  digitalWrite(PIN_BM_DOSING_B,    HIGH);
+  digitalWrite(PIN_BM_DOSING_C,    HIGH);
   digitalWrite(PIN_BM_MIX_VALVE,   HIGH);
-  digitalWrite(PIN_BM_SOL_PUMP,    HIGH);
   digitalWrite(42,                 HIGH);  // BM_MIX_PUMP
 
   digitalWrite(PIN_MM_SUB_PUMP, HIGH);

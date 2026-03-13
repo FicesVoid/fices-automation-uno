@@ -11,17 +11,13 @@ void moduleManual() {
   digitalWrite(PIN_CR_MAIN_PUMP,        CR_MAIN_PUMP        ? LOW : HIGH);
 
   /* ===== BUFFER MIXER ===== */
-  digitalWrite(PIN_BM_VALVE_A,   BM_VALVE_A   ? LOW : HIGH);
-  digitalWrite(PIN_BM_VALVE_B,   BM_VALVE_B   ? LOW : HIGH);
-  digitalWrite(PIN_BM_VALVE_C,   BM_VALVE_C   ? LOW : HIGH);
+  digitalWrite(PIN_BM_DOSING_A,  BM_DOSING_A  ? LOW : HIGH);
+  digitalWrite(PIN_BM_DOSING_B,  BM_DOSING_B  ? LOW : HIGH);
+  digitalWrite(PIN_BM_DOSING_C,  BM_DOSING_C  ? LOW : HIGH);
   digitalWrite(PIN_BM_MIX_VALVE, BM_MIX_VALVE ? LOW : HIGH);
-
 
   /* ===== BM MIX PUMP (Pin 42) ===== */
   digitalWrite(PIN_BM_MIX_PUMP, BM_MIX_PUMP ? LOW : HIGH);
-
-  /* ===== BM SOL PUMP (Pin 41) ===== */
-  digitalWrite(PIN_BM_SOL_PUMP, BM_SOL_PUMP ? LOW : HIGH);
 
   /* ===== MM SOL PUMP (Pin 39) ===== */
   digitalWrite(PIN_MM_SUB_PUMP, MM_SUB_PUMP ? LOW : HIGH);

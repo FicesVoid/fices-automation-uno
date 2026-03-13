@@ -49,10 +49,10 @@ void cancelMixingRecipe() {
   // Stop all mixing operations
   recipeActive = false;
   
-  // Close all mixer valves
-  BM_VALVE_A = 0;
-  BM_VALVE_B = 0;
-  BM_VALVE_C = 0;
+  // Turn off all dosing pumps
+  BM_DOSING_A = 0;
+  BM_DOSING_B = 0;
+  BM_DOSING_C = 0;
   BM_MIX_VALVE = 0;
   BM_MIX_PUMP = 0;
   

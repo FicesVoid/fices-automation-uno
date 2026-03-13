@@ -20,11 +20,10 @@ void moduleSerialPI() {
       case 0x04: CR_GREENHOUSE_VALVE = val; break;
       
       // ===== BUFFER MIXER =====
-      case 0x05: BM_VALVE_A = val; break;
-      case 0x06: BM_VALVE_B = val; break;
-      case 0x07: BM_VALVE_C = val; break;
+      case 0x05: BM_DOSING_A = val; break;
+      case 0x06: BM_DOSING_B = val; break;
+      case 0x07: BM_DOSING_C = val; break;
       case 0x08: BM_MIX_VALVE = val; break;
-      case 0x09: BM_SOL_PUMP = val; break;
       case 0x0A: BM_MIX_PUMP = val; break;
       
     // --- Mixer Module ---
@@ -49,5 +48,8 @@ void moduleSerialPI() {
         // Unknown ID, ignore
         break;
     }
+    
+    // Save state to EEPROM after every command (only writes if changed)
+    saveStateToEEPROM();
   }
 }

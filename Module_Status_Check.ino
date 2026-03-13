@@ -7,17 +7,14 @@ void moduleStatusCheck() {
   // BM Mix Pump (Pin 42)
   state_BM_MIX_PUMP = !digitalRead(PIN_BM_MIX_PUMP);
 
-  // BM Solution Pump (Pin 41)
-  state_BM_SOL_PUMP = !digitalRead(PIN_BM_SOL_PUMP);
-
-  // MM Solution Pump (Pin 39)
+  // MM Substation Pump (Pin 43)
   state_MM_SUB_PUMP = !digitalRead(PIN_MM_SUB_PUMP);
 
   state_BM_MIX_VALVE = !digitalRead(PIN_BM_MIX_VALVE);
 
-  state_BM_VALVE_A = !digitalRead(PIN_BM_VALVE_A);
-  state_BM_VALVE_B = !digitalRead(PIN_BM_VALVE_B);
-  state_BM_VALVE_C = !digitalRead(PIN_BM_VALVE_C);
+  state_BM_DOSING_A = !digitalRead(PIN_BM_DOSING_A);
+  state_BM_DOSING_B = !digitalRead(PIN_BM_DOSING_B);
+  state_BM_DOSING_C = !digitalRead(PIN_BM_DOSING_C);
 
   state_MM_T1_IN  = !digitalRead(PIN_MM_T1_IN);
   state_MM_T1_OUT = !digitalRead(PIN_MM_T1_OUT);
