@@ -110,8 +110,7 @@ void sendStateHeartbeat() {
   if (millis() - lastHeartbeat < HEARTBEAT_INTERVAL) return;
   lastHeartbeat = millis();
   
-  // 19 state entries (including SYSTEM_MODE)
-  const byte count = 19;
+  // 19 state entries (including SYSTEM_MODE) - count replaced by actualCount below
   
   // Build pairs: [byte_id, state_value]
   // Using the same IDs as BYTE_ID_MAP in serial_manager.py

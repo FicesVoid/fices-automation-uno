@@ -363,12 +363,12 @@ void initEventState()
   last_CR_GREENHOUSE_VALVE = state_CR_GREENHOUSE_VALVE;
   last_CR_MAIN_PUMP        = state_CR_MAIN_PUMP;
 
-  last_BM_VALVE_A   = state_BM_VALVE_A;
-  last_BM_VALVE_B   = state_BM_VALVE_B;
-  last_BM_VALVE_C   = state_BM_VALVE_C;
+  last_BM_DOSING_A  = state_BM_DOSING_A;
+  last_BM_DOSING_B  = state_BM_DOSING_B;
+  last_BM_DOSING_C  = state_BM_DOSING_C;
   last_BM_MIX_VALVE = state_BM_MIX_VALVE;
   last_BM_MIX_PUMP  = state_BM_MIX_PUMP;
-  last_BM_SOL_PUMP  = state_BM_SOL_PUMP;
+  // last_BM_SOL_PUMP  = state_BM_SOL_PUMP; // Removed as SOL_PUMP no longer exists
 
   last_MM_SUB_PUMP = state_MM_SUB_PUMP;
 
